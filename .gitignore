@@ -1,0 +1,15 @@
+# Ignore object and binaries
+*.o
+*.obj
+*.exe
+*.a
+*.so
+*.dll
+*.dylib
+
+# Ignore build directory
+build/
+
+# Ignore dependency directory
+deps/
+libs/
