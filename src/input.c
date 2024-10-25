@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "input.h"
+
 //Analog joystick dead zone
 const int GAMECONTROLLER_DEAD_ZONE = 8000;
 const int SPEED = 150;
@@ -29,15 +29,31 @@ void process_input() {
 	// Poll
         while (SDL_PollEvent(&event)) {
                 if(event.type == SDL_CONTROLLERAXISMOTION) {
-                        if(event.caxis.axis == 1) {
-                                if(event.caxis.value > GAMECONTROLLER_DEAD_ZONE) {
-                                	controller_1.yDir = 1;
-                                } else if(event.caxis.value < -GAMECONTROLLER_DEAD_ZONE) {
-                                        controller_1.yDir = -1;
-                                } else {
-                                	controller_1.yDir = 0;
-                                }
-                        }
-                }
-        }
+			//Motion on controller 0
+                        if( event.caxis.which == 0 ) {
+                        	if(event.caxis.axis == 1) {
+                                	if(event.caxis.value > GAMECONTROLLER_DEAD_ZONE) {
+                                		controller_1.yDir = 1;
+                                	} else if(event.caxis.value < -GAMECONTROLLER_DEAD_ZONE) {
+                                        	controller_1.yDir = -1;
+                                	} else {
+                                		controller_1.yDir = 0;
+                                	}
+                        	}
+				printf("Controller 1: %i\n", event.caxis.value);
+                	} else if(event.caxis.which == 1) {
+				if(event.caxis.axis == 1) {
+                                	if(event.caxis.value > GAMECONTROLLER_DEAD_ZONE) {
+                                		controller_2.yDir = 1;
+                                	} else if(event.caxis.value < -GAMECONTROLLER_DEAD_ZONE) {
+                                        	controller_2.yDir = -1;
+                                	} else {
+                                		controller_2.yDir = 0;
+                                	}
+                        	}
+				printf("Controller 2: %i\n", event.caxis.value);
+
+			}
+        	}
+	}
 }

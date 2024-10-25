@@ -46,6 +46,24 @@ int SDL_setup() {
 		return 0;
 	}
 
+	switch(SDL_NumJoysticks()) {
+		case 0:
+			printf("Warning: No controllers connected!\n");
+			break;
+		case 1:
+			printf("Warning: Only 1 controller connected!\n");
+			break;
+		case 2:
+			// Load both controllers.
+            		controller_1->gGameController = SDL_GameControllerOpen( 0 );
+            		controller_2->gGameController = SDL_GameControllerOpen( 1 );
+			if( controller_1->gGameController == NULL || controller_2->gGameController == NULL )
+            		{
+                		printf( "Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError() );
+            		}
+			break;
+	}
+
 	return 1;
 }
 
