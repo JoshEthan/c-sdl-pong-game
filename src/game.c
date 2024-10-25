@@ -55,6 +55,7 @@ int game_setup() {
 	// Create Score text.
 	// Create Paddles.
 	// Setup Ball.
+	return 0;
 }
 
 int setup() {
@@ -64,23 +65,6 @@ int setup() {
 	}
 
 	return 1;
-}
-
-void process_input() {
-	SDL_Event event;
-	SDL_PollEvent(&event);
-
-	switch(event.type) {
-		case SDL_QUIT:
-			is_game_running = 0;
-			break;
-		case SDL_KEYDOWN:
-			if(event.key.keysym.sym == SDLK_ESCAPE) {
-				is_game_running = 0;
-			}
-			break;
-	}
-
 }
 
 void render() {
