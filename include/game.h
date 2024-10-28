@@ -1,11 +1,29 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "input.h"
 
-extern int is_game_running;
+struct Controller {
+	int yDir;
+	SDL_GameController* controller;
+};
 
-int initialize_window(void);
-int setup();
-void update();
-void render();
-void deinitialize();
+struct Game {
+	int isRunning;
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	struct Controller controller1;
+	struct Controller controller2;
+};
+
+struct Box {
+        float x;
+        float y;
+        float width;
+        float height;
+};
+
+struct Game createGame();
+void initializeGame();
+void handleGameEvents();
+void updateGame();
+void renderGame();
+void deinitializeGame();
