@@ -5,9 +5,18 @@
 #include <stdlib.h>
 #include "game.h"
 
-int JOYSTICK_DEAD_ZONE = 8000;
+#define FPS 30
+#define FRAME_TARGET_TIME (1000 / FPS)
 
+int JOYSTICK_DEAD_ZONE = 8000;
+const int SPEED = 150;
+
+int last_frame_time = 0;
 struct Box ball;
+struct Box paddle1;
+struct Box paddle2;
+
+int topPadding = 100;
 
 void gameSetup();
 
@@ -86,7 +95,7 @@ void handleGameEvents(struct Game* game) {
                                         	game->controller1.yDir = 0;
                                 	}
                         	}
-				printf("Controller 1: %i\n", event.caxis.value);
+				//printf("Controller 1: %i\n", event.caxis.value);
 			} else if(event.caxis.which == 1) {
                         	if(event.caxis.axis == 1) {
                                 	if(event.caxis.value > JOYSTICK_DEAD_ZONE) {
@@ -97,7 +106,7 @@ void handleGameEvents(struct Game* game) {
                                         	game->controller2.yDir = 0;
                                 	}
                         	}
-				printf("Controller 2: %i\n", event.caxis.value);
+				//printf("Controller 2: %i\n", event.caxis.value);
 			}        
                 }
         }
@@ -107,27 +116,25 @@ void gameSetup() {
 	// Create an array of rectangles.
 	// Then in the render function we need to render the array. Loop through it, etc.
 	// Create Score text.
-	// Create Paddles.
-	// Setup Ball.
-	ball.x = 20;
-	ball.y = 20;
+	ball.x = 200;
+	ball.y = 200;
 	ball.width = 15;
-	ball.height = 150;
-}
+	ball.height = 15;
 
-//int setup() {
-//	if(!SDL_setup()) {
-//		printf("SDL_Setup failed.");
-//		return 0;
-//	}
-//
-//	return 1;
-//}
+	paddle1.x = 20;
+	paddle1.y = 120;
+	paddle1.width = 15;
+	paddle1.height = 60;
+	
+	paddle2.x = 770;
+	paddle2.y = 120;
+	paddle2.width = 15;
+	paddle2.height = 60;
+}
 
 void renderGame(struct Game* game) {
         SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(game->renderer);
-	SDL_RenderPresent(game->renderer);
 
 	SDL_Rect ball_rect = {
                 ball.x,
@@ -135,14 +142,60 @@ void renderGame(struct Game* game) {
                 ball.width,
                 ball.height
         };
+	
+	SDL_Rect paddle1_rect = {
+                paddle1.x,
+                paddle1.y,
+                paddle1.width,
+                paddle1.height
+        };
+	
+	SDL_Rect paddle2_rect = {
+                paddle2.x,
+                paddle2.y,
+                paddle2.width,
+                paddle2.height
+        };
 
 	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
-        SDL_RenderFillRect(game->renderer, &ball_rect);
 
-        SDL_RenderPresent(game->renderer);
+        SDL_RenderFillRect(game->renderer, &ball_rect);
+        SDL_RenderFillRect(game->renderer, &paddle1_rect);
+        SDL_RenderFillRect(game->renderer, &paddle2_rect);
+        
+	SDL_RenderPresent(game->renderer);
 }
 
-void updateGame(struct Game* game) {}
+void updateGame(struct Game* game) {
+        int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - last_frame_time);
+
+        if(time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
+                SDL_Delay(time_to_wait);
+        }
+
+        float delta_time = (SDL_GetTicks() - last_frame_time) / 1000.0f;
+
+        last_frame_time = SDL_GetTicks();
+
+	int velocity1 = game->controller1.yDir * SPEED * delta_time;
+	int velocity2 = game->controller2.yDir * SPEED * delta_time;
+
+        if(paddle1.y < topPadding && velocity1 > 0) {
+        	paddle1.y += game->controller1.yDir * SPEED * delta_time;
+	} else if(paddle1.y > 520 && velocity1 < 0) {
+		paddle1.y += game->controller1.yDir * SPEED * delta_time;
+	} else if(paddle1.y > topPadding && paddle1.y < 520) {
+		paddle1.y += game->controller1.yDir * SPEED * delta_time;
+	}
+
+        if(paddle2.y < topPadding && velocity2 > 0) {
+		paddle2.y += game->controller2.yDir * SPEED * delta_time;
+	} else if(paddle2.y > 520 && velocity2 < 0) {
+		paddle2.y += game->controller2.yDir * SPEED * delta_time;
+	} else if(paddle2.y > topPadding && paddle2.y < 520) {
+		paddle2.y += game->controller2.yDir * SPEED * delta_time;
+	}
+}
 
 void deinitializeGame(struct Game* game) {
 	SDL_DestroyRenderer(game->renderer);
