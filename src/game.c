@@ -16,12 +16,20 @@ struct Box ball;
 struct Box paddle1;
 struct Box paddle2;
 
+float x = 0.0;
+float y = 0.0;
 int topPadding = 100;
 
 void gameSetup();
+void checkCollision();
 
 void initializeGame(struct Game* game, char* title, int w, int h) {
 	game->isRunning = 1;
+
+	x = (float)rand()/(float)(RAND_MAX/1);
+	y = (float)rand()/(float)(RAND_MAX/1);
+
+	printf("%f", x);
 
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("Error initializing SDL.\n");
@@ -194,6 +202,47 @@ void updateGame(struct Game* game) {
 		paddle2.y += game->controller2.yDir * SPEED * delta_time;
 	} else if(paddle2.y > topPadding && paddle2.y < 520) {
 		paddle2.y += game->controller2.yDir * SPEED * delta_time;
+	}
+
+	// Update the Ball
+	ball.x += x * SPEED * delta_time;
+        ball.y += y * SPEED * delta_time;
+}
+
+void checkCollision(struct Box a, struct Box b) {
+	//The sides of the rectangles
+    	int leftA, leftB;
+    	int rightA, rightB;
+    	int topA, topB;
+    	int bottomA, bottomB;
+
+	//Calculate the sides of rect A
+    	leftA = a.x;
+    	rightA = a.x + a.width;
+    	topA = a.y;
+    	bottomA = a.y + a.height;
+
+    	//Calculate the sides of rect B
+    	leftB = b.x;
+    	rightB = b.x + b.width;
+    	topB = b.y;
+    	bottomB = b.y + b.height;
+
+	//If any of the sides from A are outside of B
+    	if(bottomA >= topB) {
+    		printf("True");
+	}
+
+    	if( topA <= bottomB ) {
+    		printf("True");
+	}
+
+    	if( rightA >= leftB ) {
+    		printf("True");
+	}
+
+    	if( leftA <= rightB ) {
+    		printf("True");
 	}
 }
 
