@@ -21,7 +21,7 @@ float y = 0.0;
 int topPadding = 100;
 
 void gameSetup();
-void checkCollision();
+int checkCollision();
 
 void initializeGame(struct Game* game, char* title, int w, int h) {
 	game->isRunning = 1;
@@ -124,7 +124,7 @@ void gameSetup() {
 	// Create an array of rectangles.
 	// Then in the render function we need to render the array. Loop through it, etc.
 	// Create Score text.
-	ball.x = 200;
+	ball.x = 770;
 	ball.y = 200;
 	ball.width = 15;
 	ball.height = 15;
@@ -205,11 +205,15 @@ void updateGame(struct Game* game) {
 	}
 
 	// Update the Ball
-	ball.x += x * SPEED * delta_time;
-        ball.y += y * SPEED * delta_time;
+	//ball.x += x * SPEED * delta_time;
+        //ball.y += y * SPEED * delta_time;
+
+	if(checkCollision(ball, paddle2)) {
+		printf("They are colliding.\n");
+	}
 }
 
-void checkCollision(struct Box a, struct Box b) {
+int checkCollision(struct Box a, struct Box b) {
 	//The sides of the rectangles
     	int leftA, leftB;
     	int rightA, rightB;
@@ -227,23 +231,24 @@ void checkCollision(struct Box a, struct Box b) {
     	rightB = b.x + b.width;
     	topB = b.y;
     	bottomB = b.y + b.height;
+     	
+	if(bottomA <= topB) {
+        	return 0;
+    	}
 
-	//If any of the sides from A are outside of B
-    	if(bottomA >= topB) {
-    		printf("True");
-	}
+    	if(topA >= bottomB) {
+        	return 0;
+    	}
 
-    	if( topA <= bottomB ) {
-    		printf("True");
-	}
+    	if(rightA <= leftB) {
+        	return 0;
+    	}
 
-    	if( rightA >= leftB ) {
-    		printf("True");
-	}
+    	if(leftA >= rightB) {
+        	return 0;
+    	}
 
-    	if( leftA <= rightB ) {
-    		printf("True");
-	}
+	return 1;
 }
 
 void deinitializeGame(struct Game* game) {
