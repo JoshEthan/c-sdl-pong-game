@@ -3,10 +3,13 @@
  * */
 
 #include <stdlib.h>
+#include <SDL2/SDL_ttf.h>
 #include "game.h"
 
 #define FPS 30
 #define FRAME_TARGET_TIME (1000 / FPS)
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
 
 int JOYSTICK_DEAD_ZONE = 8000;
 const int SPEED = 150;
@@ -23,25 +26,24 @@ int topPadding = 100;
 void gameSetup();
 int checkCollision();
 
-void initializeGame(struct Game* game, char* title, int w, int h) {
+void initializeGame(struct Game* game) {
+	// Game State
+	game->isPaused = 0;
 	game->isRunning = 1;
 
-	x = (float)rand()/(float)(RAND_MAX/1);
-	y = (float)rand()/(float)(RAND_MAX/1);
-
-	printf("%f", x);
-
+	// SDL Init
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("Error initializing SDL.\n");
 		game->isRunning = 0;
 	}
 
+	// Window
 	game->window = SDL_CreateWindow(
-		title,
+		"Pong",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		w,
-		h,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
 		0
 	);
 
@@ -72,6 +74,10 @@ void initializeGame(struct Game* game, char* title, int w, int h) {
 			break;
 	}
 
+	// Game Variables
+	// Player 1
+	// Player 2
+	// Ball
 	gameSetup();
 }
 
