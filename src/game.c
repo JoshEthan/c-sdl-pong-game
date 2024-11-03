@@ -121,8 +121,6 @@ void handleGameEvents(struct Game* game) {
 }
 
 void gameSetup() {
-	// Create an array of rectangles.
-	// Then in the render function we need to render the array. Loop through it, etc.
 	// Create Score text.
 	ball.x = 770;
 	ball.y = 200;
@@ -231,10 +229,15 @@ int checkCollision(struct Box a, struct Box b) {
     	rightB = b.x + b.width;
     	topB = b.y;
     	bottomB = b.y + b.height;
-     	
+     
+	// These return false. Meaning there is no collision if hey are true.
+	// Such as, if A-botom is less-than OR higher THAN B-top.
+	// These normally return FALSE
 	if(bottomA <= topB) {
         	return 0;
-    	}
+    	} else {
+		printf("Is colliding! in the Check function!\n");
+	}
 
     	if(topA >= bottomB) {
         	return 0;
