@@ -1,17 +1,21 @@
 Pong game recreated using C and SDL.
 
+We are working on re-writing a lot of the code base.
+
 TODO:
-- Ball Movement and bouncing.
-    - Law of Reflection.
-        - R = V - 2 * (V * N) * N
-        - R: New direction
-        - V: Incoming velocity vector
-        - N: Normal vector of the surface (the edge of the paddle.)
-        - V * N: Dot product between V and N
-- Render out the text and background line.
-- Track score.
-- Win Lose Conditions.
-- Start menu?
-- Networking Multiplayer.
-- Dedicated Server & Peer to Peer
-- I wonder if I should include walls as a new structure type. I can make them dark gray. This helps visibility of the boundaries. It can also be nice to use for collision for paddles and ball. And it makes it easy to change boundaries.
+- Redo the init game function. I am deciding if I want to have my own window and render files, OR if I want to just have a SDL file that handles its own setup. 
+So we can either do windowInit and RendererInit OR SDLInit(). Seems redundant to have SDLInit if I already have SDLInit... but I kinda think it makes sense to have a function or something that will handle all of the SDL initialization that isn't in the game init. 
+struct SDL {} sdl;
+sdlInit();
+
+I can handle all of the font and networking init stuff in the sdl init files. It kinda makes sense since it is its own setup. It just seems redunant to make my own sdl->window when there is already a SDL_Window. You know?
+Why makes a struct of a class?
+
+
+# Resources
+In case we somehow lose the web pages:
+C++ example - Good file org
+https://github.com/rafaelcn/pong-game/blob/master/src/window.hpp
+
+C example
+https://github.com/leviaviv28/SDL2-C-Pong/blob/master/Paddle.h
