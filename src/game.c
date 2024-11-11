@@ -8,8 +8,6 @@
 
 #define FPS 30
 #define FRAME_TARGET_TIME (1000 / FPS)
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
 
 int JOYSTICK_DEAD_ZONE = 8000;
 const int SPEED = 150;
@@ -27,58 +25,22 @@ void gameSetup();
 int checkCollision();
 
 void initializeGame(struct Game* game) {
-	// Game State
-	game->isPaused = 0;
-	game->isRunning = 1;
-
-	// SDL Init
-	if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		printf("Error initializing SDL.\n");
+	// Initialize SDL
+	if(initializeMultimedia(&game->sdl)) {
+		// Game State
+		game->isPaused = 1;
 		game->isRunning = 0;
+	} else {
+		game->isRunning = 1;
 	}
 
-	// Window
-	game->window = SDL_CreateWindow(
-		"Pong",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
-		0
-	);
-
-	if(!game->window) {
-		fprintf(stderr, "Error creating window!\n");
-		game->isRunning = 0;
-	}
-	
-	game->renderer = SDL_CreateRenderer(game->window, -1, 0);
-
-	if(!game->renderer) {
-		fprintf(stderr, "Error creating renderer!\n");
-		game->isRunning = 0;
-	}
-
-	//Check for game controllers
-        switch(SDL_NumJoysticks()) {
-		case 0:
- 			printf("Warning: No controllers connected!\n");
-			break;
-		case 1:
-			printf("Warning: Only one controller connected!\n");
-			break;
-		case 2:
-			//Load game controllers
-			game->controller1.controller = SDL_GameControllerOpen(0);
-			game->controller2.controller = SDL_GameControllerOpen(1);
-			break;
-	}
-
-	// Game Variables
 	// Player 1
+	player1->paddle = { 0, 120 / 2, 16, 64};
+
 	// Player 2
+	player2->paddle = { 0, 120 / 2, 16, 64};
+
 	// Ball
-	gameSetup();
 }
 
 void handleGameEvents(struct Game* game) {
@@ -126,23 +88,6 @@ void handleGameEvents(struct Game* game) {
         }
 }
 
-void gameSetup() {
-	// Create Score text.
-	ball.x = 770;
-	ball.y = 200;
-	ball.width = 15;
-	ball.height = 15;
-
-	paddle1.x = 20;
-	paddle1.y = 120;
-	paddle1.width = 15;
-	paddle1.height = 60;
-	
-	paddle2.x = 770;
-	paddle2.y = 120;
-	paddle2.width = 15;
-	paddle2.height = 60;
-}
 
 void renderGame(struct Game* game) {
         SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
@@ -261,25 +206,22 @@ int checkCollision(struct Box a, struct Box b) {
 }
 
 void deinitializeGame(struct Game* game) {
-	SDL_DestroyRenderer(game->renderer);
+	deinitializeMultimedia(&game->sdl);
 
 	//Check for game controllers
-        switch(SDL_NumJoysticks()) {
-		case 0:
- 			printf("Warning: No controllers to diconnect!\n");
-			break;
-		case 1:
-			printf("Warning: Only one controller to disconnect!\n");
-			break;
-		case 2:
-			//Close game controllers
-			SDL_GameControllerClose(game->controller1.controller);
-			game->controller1.controller = NULL;
-			SDL_GameControllerClose(game->controller2.controller);
-			game->controller2.controller = NULL;
-			break;
-	}
-       
-	SDL_DestroyWindow(game->window);
-        SDL_Quit();
+    //     switch(SDL_NumJoysticks()) {
+	// 	case 0:
+ 	// 		printf("Warning: No controllers to diconnect!\n");
+	// 		break;
+	// 	case 1:
+	// 		printf("Warning: Only one controller to disconnect!\n");
+	// 		break;
+	// 	case 2:
+	// 		//Close game controllers
+	// 		SDL_GameControllerClose(game->controller1.controller);
+	// 		game->controller1.controller = NULL;
+	// 		SDL_GameControllerClose(game->controller2.controller);
+	// 		game->controller2.controller = NULL;
+	// 		break;
+	// }
 }

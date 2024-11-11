@@ -10,7 +10,7 @@
 int main(int argc, char *argv[]) {
 	Game game = {0};
 
-//	initializeGame(&game, "Pong", 800, 600);
+	initializeGame(&game);
 
 //	while(game.isRunning) {
 //		handleGameEvents(&game);
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 //		renderGame(&game);
 //	}
 
-//	deinitializeGame(&game);
+	deinitializeGame(&game);
 
 	return 0;
 }

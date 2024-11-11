@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "paddle.h"
-#include "ball.h"\
+#include "player.h"
+#include "ball.h"
+#include "multimedia.h"
 
 typedef struct {
 	SDL_Event event;
@@ -9,17 +10,15 @@ typedef struct {
 	int isPaused;
 
 	// Players
-	Paddle player1;
-	Paddle player2;
+	Player player1;
+	Player player2;
 
 	// Ball
 	Ball ball;
 
-	// Other
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	// Add audio back in towards the end.
-	//Audio audio;
+	// Multimedia Library
+	Multimedia sdl;
+
 } Game;
 
 
