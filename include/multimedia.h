@@ -10,6 +10,6 @@ typedef struct {
 /**
  * Constructor of the multimedia struct. It initializes the multimedia entity.
  */
-void initializeMultimedia(struct Multimedia* multimedia);
+int initializeMultimedia();
 
-void deinitializeMultimedia(struct Multimedia* multimedia);
+void deinitializeMultimedia();

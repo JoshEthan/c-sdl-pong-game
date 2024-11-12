@@ -4,7 +4,7 @@ We are working on re-writing a lot of the code base.
 
 TODO:
 
-- I went with a multimedia file. This one handles the SDL library. The bare bones init should work. Let's try to init it.
+- We ran into a lot of errors. So I just cleared out the game file. Figured it is all saved in Git. We need to work through errors in ERROR.md
 - We need to work on the while loop next.
 - Then we can add controller and input support.
 - Then we can add updating the screne and paddles.
