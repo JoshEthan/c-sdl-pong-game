@@ -3,9 +3,10 @@ Pong game recreated using C and SDL.
 We are working on re-writing a lot of the code base.
 
 TODO:
+- Yeah, I am working on the player input right now. I may need to implement some async stuff with C. Didn't realize that is what I will need. How complicated...
+- Rendered in the paddles. Easy peasy.
+- Next I should try and see if input will modify the paddles positions.
 
-- We ran into a lot of errors. So I just cleared out the game file. Figured it is all saved in Git. We need to work through errors in ERROR.md
-- We need to work on the while loop next.
 - Then we can add controller and input support.
 - Then we can add updating the screne and paddles.
 - Text
