@@ -38,10 +38,26 @@ void initializeGame(Game* game) {
 }
 
 void handleGameEvents(Game* game) {
+	SDL_Event event;
+	SDL_PollEvent(&event);
+	
+	switch(event.type) {
+		case SDL_QUIT:
+			game->isRunning = 0;
+			break;
+                case SDL_KEYDOWN:
+                        if(event.key.keysym.sym == SDLK_ESCAPE) {
+                                game->isRunning = 0;
+                        }
+                        break;
+	}
 }
 
 
 void renderGame(Game* game) {
+        SDL_SetRenderDrawColor(game->sdl.renderer, 36, 40, 59, 255);
+	SDL_RenderClear(game->sdl.renderer);
+	SDL_RenderPresent(game->sdl.renderer);
 }
 
 void updateGame(Game* game) {

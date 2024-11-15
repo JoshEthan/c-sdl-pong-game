@@ -12,11 +12,11 @@
 #define SUCCESS 0
 #define ERROR -1
 
-int initializeMultimedia(struct Multimedia* multimedia) {
+int initializeMultimedia(Multimedia* multimedia) {
 	// SDL INITIALIZATION
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
-		return ERROR
+		return ERROR;
 	}
 
 	// WINDOW CREATION
@@ -32,7 +32,7 @@ int initializeMultimedia(struct Multimedia* multimedia) {
 	if(!multimedia->window) {
 		fprintf(stderr, "Error creating window: %s\n", SDL_GetError());
 		SDL_Quit();
-		return ERROR
+		return ERROR;
 	}
 	
 	// RENDER CREATION
@@ -42,7 +42,7 @@ int initializeMultimedia(struct Multimedia* multimedia) {
 		fprintf(stderr, "Error creating renderer: %s\n", SDL_GetError());
 		SDL_DestroyWindow(multimedia->window);
         SDL_Quit();
-		return ERROR
+		return ERROR;
 	}
 
 	// GAME CONTROLLERS
@@ -63,7 +63,7 @@ int initializeMultimedia(struct Multimedia* multimedia) {
 	return SUCCESS;
 }
 
-void deinitializeMultimedia(struct Multimedia* multimedia) {
+void deinitializeMultimedia(Multimedia* multimedia) {
 	SDL_DestroyRenderer(multimedia->renderer);
 	SDL_DestroyWindow(multimedia->window);
     SDL_Quit();

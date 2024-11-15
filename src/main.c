@@ -12,11 +12,11 @@ int main(int argc, char *argv[]) {
 
 	initializeGame(&game);
 
-//	while(game.isRunning) {
-//		handleGameEvents(&game);
+	while(game.isRunning) {
+		handleGameEvents(&game);
 //		updateGame(&game);
-//		renderGame(&game);
-//	}
+		renderGame(&game);
+	}
 
 	deinitializeGame(&game);
 
